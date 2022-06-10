@@ -103,7 +103,7 @@ Window {
                 id: listModelMessages
                 ListElement {
                     name: "System"
-                    body: "Welcome to chat client This is a loooooong textThis is a loooooong textThis is a loooooong text"
+                    body: "Welcome to chat client This is a loooooong text This is a loooooong textThis is a loooooong text"
                 }
             }
             delegate: msgDelegate
