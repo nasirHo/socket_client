@@ -9,10 +9,24 @@ Window {
     visible: true
     title: qsTr("Chat Client")
 
+    property string nameColor
+
     Connections {
             target: client
             function onNewMessage(type, name, msg) {
+                switch (name + ""){
+                case "Server":
+                    nameColor = "red"
+                    break
+                case "You":
+                    nameColor = "blue"
+                    break;
+                default:
+                    nameColor = "green"
+                }
+
                 listModelMessages.append({
+                                             textColor : nameColor,
                                              name: name + "",
                                              body: msg + ""
                                          })
@@ -41,7 +55,7 @@ Window {
                 Text{
                     id: msgName
                     text: name
-                    color: "red"
+                    color: textColor
                     Layout.preferredHeight: 20
                     Layout.fillWidth: true
                 }
@@ -102,6 +116,7 @@ Window {
             model: ListModel {
                 id: listModelMessages
                 ListElement {
+                    textColor: "red"
                     name: "System"
                     body: "Welcome to chat client This is a loooooong text This is a loooooong textThis is a loooooong text"
                 }

@@ -6,8 +6,9 @@ A Socket client implement by QT 5.15
     - cmake
     - qt515base
     - qt515quickcontrols2
+    - mesa-common-dev libglu1-mesa-dev
 ```sh
-sudo apt install build-essential cmake
+sudo apt install build-essential cmake mesa-common-dev libglu1-mesa-dev
 ```
 Because Ubuntu 18.04 QT version is too old, you have to add this ppa to your apt mananger.
     
@@ -32,6 +33,7 @@ source /etc/profile
     - qt5-base
     - qt5-quickcontrols2
 ## Compile
+- clone this repository
 - make a directory and enter
 ```shell=
 mkdir -p build && cd biuld

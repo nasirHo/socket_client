@@ -35,10 +35,10 @@ void client::sendMessage(const QString &type, const QString &message){
 void client::onConnected()
 {
     qInfo() << "Connected to host.";
-    emit newMessage("join", "You", "Connect to Server...");
+    //emit newMessage("join", "You", "Connect to Server...");
     isConnected = true;
     emit newStatus(isConnected);
-    this->sendMessage("join", " has joined.");
+    this->sendMessage("join", this->client_name + " has joined.");
 }
 
 void client::onReadyRead()
