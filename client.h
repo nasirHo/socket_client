@@ -11,8 +11,6 @@ class client : public QObject
 
 public:
     explicit client(QObject *parent = nullptr);
-    bool getConnectedStatus();
-    void printConnectedStatus();
 
 signals:
     void newMessage(const QByteArray &type, const QByteArray &name, const QByteArray &ba);
@@ -21,12 +19,14 @@ signals:
 public slots:
     void connectToServer(const QString &ip, const QString &port, const QString &name);
     void sendMessage(const QString &type, const QString &message);
+    void disconnectFromServer();
 
 private slots:
     void onConnected();
     void onReadyRead();
     void onErrorOccurred(QAbstractSocket::SocketError error);
-    void onStateChanged(QAbstractSocket::SocketState state);
+    void onDisconnected();
+    //void onStateChanged(QAbstractSocket::SocketState state);
 
 private:
     QTcpSocket* client_socket;

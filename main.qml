@@ -34,11 +34,26 @@ Window {
             }
 
             function onNewStatus(s){
-                buttonConnect.enabled = !s;
+                textFieldIp.enabled = !s;
+                textFieldPort.enabled = !s;
+                textFieldName.enabled = !s;
                 buttonSend.enabled = s;
                 if(s){
-                    buttonConnect.text = "Connected!"
+                    buttonConnect.text = "Disconnect"
+                    textFieldName.focus = false
                     textFieldMessage.focus = true
+                }else{
+                    buttonConnect.text = "Connect"
+                    textFieldName.clear()
+                    textFieldName.focus = true
+                    textFieldMessage.focus = false
+                    listModelMessages.clear()
+                    listModelMessages.append({
+                                                 textColor: "red",
+                                                 name: "System",
+                                                 body: "Welcome to chat client This is a loooooong text This is a loooooong textThis is a loooooong text"
+                                             })
+                    listViewMessages.positionViewAtEnd()
                 }
             }
     }
@@ -98,13 +113,17 @@ Window {
                 placeholderText: qsTr("Name")
                 Layout.fillWidth: true
                 onAccepted: buttonConnect.clicked()
+                focus: true
             }
 
             Button {
                 id: buttonConnect
                 text: qsTr("Connect")
                 onClicked:{
-                    client.connectToServer(textFieldIp.text, textFieldPort.text, textFieldName.text)
+                    if (textFieldIp.enabled)
+                        client.connectToServer(textFieldIp.text, textFieldPort.text, textFieldName.text)
+                    else
+                        client.disconnectFromServer()
                 }
             }
         }

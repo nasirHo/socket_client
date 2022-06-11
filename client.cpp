@@ -14,7 +14,8 @@ void client::connectToServer(const QString &ip, const QString &port, const QStri
     connect(client_socket, &QTcpSocket::connected, this, &client::onConnected);
     connect(client_socket, &QTcpSocket::errorOccurred, this, &client::onErrorOccurred);
     connect(client_socket, &QTcpSocket::readyRead, this, &client::onReadyRead);
-    connect(client_socket, &QTcpSocket::stateChanged, this, &client::onStateChanged);
+    connect(client_socket, &QTcpSocket::disconnected, this, &client::onDisconnected);
+    //connect(client_socket, &QTcpSocket::stateChanged, this, &client::onStateChanged);
 }
 
 void client::sendMessage(const QString &type, const QString &message){
@@ -30,6 +31,10 @@ void client::sendMessage(const QString &type, const QString &message){
 
     client_socket->write(toSendB);
     client_socket->flush();
+}
+
+void client::disconnectFromServer(){
+    client_socket->disconnectFromHost();
 }
 
 void client::onConnected()
@@ -61,10 +66,22 @@ void client::onErrorOccurred(QAbstractSocket::SocketError error)
     qWarning() << "Error:" << error;
 }
 
-void client::onStateChanged(QAbstractSocket::SocketState state){
-    qInfo() << "State: " << state;
+void client::onDisconnected(){
+    disconnect(client_socket, &QTcpSocket::connected, this, &client::onConnected);
+    disconnect(client_socket, &QTcpSocket::errorOccurred, this, &client::onErrorOccurred);
+    disconnect(client_socket, &QTcpSocket::readyRead, this, &client::onReadyRead);
+    disconnect(client_socket, &QTcpSocket::disconnected, this, &client::onDisconnected);
+//    delete client_socket;
+    client_socket->deleteLater();
+    qInfo() << "Disconnected to host.";
+    isConnected = false;
+    emit newStatus(isConnected);
 }
 
-bool client::getConnectedStatus(){
-    return this->isConnected;
-}
+//void client::onStateChanged(QAbstractSocket::SocketState state){
+//    qInfo() << "State: " << state;
+//}
+
+//bool client::getConnectedStatus(){
+//    return this->isConnected;
+//}
