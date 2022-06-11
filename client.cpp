@@ -33,6 +33,11 @@ void client::sendMessage(const QString &type, const QString &message){
     client_socket->flush();
 }
 
+void client::changeClientName(const QString &newName){
+    this->client_name = newName;
+    this->sendMessage("join", this->client_name + " has joined.");
+}
+
 void client::disconnectFromServer(){
     client_socket->disconnectFromHost();
 }
@@ -57,13 +62,17 @@ void client::onReadyRead()
 
     QJsonObject recvJO = recvJD.object();
 
-
-    emit newMessage(recvJO.value("type").toString().toUtf8(), recvJO.value("name").toString().toUtf8() == this->client_name? "You":recvJO.value("name").toString().toUtf8(), recvJO.value("body").toString().toUtf8());
+    if(recvJO.value("type").toString() == "changeName"){
+        emit changeName(recvJO.value("body").toString().toUtf8());
+    }else{
+        emit newMessage(recvJO.value("type").toString().toUtf8(), recvJO.value("name").toString().toUtf8() == this->client_name? "You":recvJO.value("name").toString().toUtf8(), recvJO.value("body").toString().toUtf8());
+    }
 }
 
 void client::onErrorOccurred(QAbstractSocket::SocketError error)
 {
     qWarning() << "Error:" << error;
+    emit newMessage("error", "System", client_socket->errorString().toUtf8());
 }
 
 void client::onDisconnected(){
