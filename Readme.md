@@ -1,12 +1,14 @@
 # Socket_client
 A Socket client implement by QT 5.15
+![](./img/example.png)
 ## Dependency
 - Ubuntu 18.04
     - build-essential
     - cmake
+    - mesa-common-dev
+    - libglu1-mesa-dev
     - qt515base
     - qt515quickcontrols2
-    - mesa-common-dev libglu1-mesa-dev
 ```sh
 sudo apt install build-essential cmake mesa-common-dev libglu1-mesa-dev
 ```
@@ -47,3 +49,7 @@ cmake ..
 cmake --build .
 ```
 ## Usage
+1. Enter IP, port and you name then press connect
+![](./img/connect.png)
+2. Type message then press send or enter to send. Press disconnect or close the window to disconnect
+![](./img/chat.png)
